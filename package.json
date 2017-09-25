@@ -1,0 +1,28 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "My homework at CWRU",
+  "main": "liri.js",
+  "dependencies": {
+    "imdb": "^1.1.0",
+    "imdb-api": "^3.1.1",
+    "name-to-imdb": "^1.6.0",
+    "node-spotify-api": "^1.0.7",
+    "request": "^2.82.0",
+    "twitter": "^1.7.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EdMacall/liri-node-app.git"
+  },
+  "author": "Ed Macall",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EdMacall/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/EdMacall/liri-node-app"
+}

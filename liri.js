@@ -43,8 +43,31 @@ var movieThis = function()
           function(error, response, body) {
   // If the request was successful...
   if (!error && response.statusCode === 200) {
-    // Then log the body from the site!
-    console.log(body);
+    // console.log(body);
+    var result = JSON.parse(body);
+    // console.log(result);
+    var miscRatings = result.Ratings;
+    console.log("\nmiscRatings ...\n" + miscRatings);
+
+    var rottenTomatoes = "";
+    for(var i = 0; i < miscRatings.length; i++)
+    {
+      if(miscRatings[i].Source === "Rotten Tomatoes")
+      {
+        rottenTomatoes = miscRatings[i].Value;
+        // console.log("I found the RottenTomatoes.");
+        break;
+      }
+    }
+
+    console.log("Title:                " + result.Title +
+    	      "\nYear:                 " + result.Year +
+    	      "\nIMDBRating:           " + result.imdbRating +
+    	      "\nRottenTomatoesRating: " + rottenTomatoes +
+    	      "\nCountry:              " + result.Country +
+    	      "\nLanguage:             " + result.Language +
+    	      "\nPlot:                 " + result.Plot +
+    	      "\nActors:               " + result.Actors);
   }
 });
 

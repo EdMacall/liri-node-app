@@ -1,7 +1,7 @@
 var args = process.argv;
 var fs = require("fs");
 var twitter = require("twitter");
-var spotify = spotify("spotify");
+// var spotify = require("spotify");
 var request = require("request");
 
 var imdb = require("imdb");
@@ -22,11 +22,33 @@ var movieId = "";
 var movieThis = function()
 {
   var movieTitle = "";
-  for(var i = 3; i < args.length; i++)
+  if(args.length > 2)
   {
-  	movieTitle += args[i];
+    for(var i = 3; i < args.length; i++)
+    {
+  	  movieTitle += args[i];
+    }
   }
 
+  if(movieTitle === "")
+  {
+    movieTitle = "Mr.%20Nobody.";
+  }
+
+  // http://www.omdbapi.com/?i=tt3896198&apikey=31c4373a
+  // http://www.omdbapi.com/?t=omg&apikey=31c4373a
+
+  // request("http://www.omdbapi.com/?t=omg&apikey=BanMePls",
+  request("http://www.omdbapi.com/?t=" + movieTitle + "&apikey=BanMePls",
+          function(error, response, body) {
+  // If the request was successful...
+  if (!error && response.statusCode === 200) {
+    // Then log the body from the site!
+    console.log(body);
+  }
+});
+
+  /*
   movieId = "";
 
   nameToImdb({ name: movieTitle }, function(err, res, inf) { 
@@ -45,11 +67,12 @@ var movieThis = function()
     if (data)
       console.log(data);
   });
+  */
 };
 
 var doWhatItSays = function()
 {
-  
+
 };
 
 var getMovie = function()

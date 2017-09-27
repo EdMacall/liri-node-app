@@ -1,6 +1,7 @@
 var args = process.argv;
 var fs = require("fs");
-var twitter = require("twitter");
+var Twitter = require("twitter");
+var twitterKeys = require("./keys.js");
 var Spotify = require("node-spotify-api");
 var request = require("request");
 
@@ -8,25 +9,57 @@ var imdb = require("imdb");
 var nameToImdb = require("name-to-imdb");
 var logFile = "log.txt";
 
+// console.log(twitterKeys);
+
 var myTweets = function()
 {
   // TODO: I need to work out my Twitter process
+  var client = new Twitter(twitterKeys);
+  // I guess it's someone else's tweets,  but I guess
+  // it's just as well anyway since I don't know what 
+  // to write anyway
+  var params = {screen_name: 'nodejs'};
+  client.get('statuses/user_timeline', params,
+             function(error, tweets, response) {
+    if (!error) {
+      var result = "";
+      for(var i = 0; i < tweets.length; i++)
+      {
+      	result += "Tweet #" + (i + 1) + "...\r\n" +
+      	          tweets[i].text + "\r\n\r\n";
+      }
+      console.log(result);
+
+      fs.appendFile(logFile, result, function(err) {
+        if (err) {
+          console.log(err);
+        }
+        else {
+          console.log("Content Added!");
+        }
+      });
+    }
+  });
 };
 
 var spotifyThisSong = function()
 {
   var songTitle = "";
-  if(args.length > 2)
+  if(args.length > 3)
   {
-    for(var i = 3; i < args.length; i++)
-    {
-  	  songTitle += args[i];
-    }
+  	songTitle = args[3];
+  	if(args.length > 4)
+  	{
+      for(var i = 4; i < args.length; i++)
+      {
+  	    songTitle += "+" + args[i];
+  	  }
+  	}
   }
 
   if(songTitle === "")
   {
-    songTitle = "The Sign";
+    songTitle = "The Sign Ace of Base";
   }
 
   var spotify = new Spotify({
@@ -38,7 +71,61 @@ var spotifyThisSong = function()
   spotify
   .search({ type: 'track', query: songTitle })
   .then(function(response) {
-    console.log(response);
+  	/*
+    console.log("Tracks:..." + 
+    	      "\n  Href: " + response.tracks.href +
+    	      "\n  Limit: " + response.tracks.limit +
+    	      "\n  Next: " + response.tracks.next +
+    	      "\n  Offset: " + response.tracks.offset +
+    	      "\n  Previous: " + response.tracks.previous +
+    	      "\n  Total: " + response.tracks.total);
+    */
+
+    var objects = response.tracks.items;
+    var nextMore = response.tracks.next;
+    console.log(nextMore);
+    if(response.tracks.total > 20 && nextMore != null)
+    {
+      console.log("I'm doing the next 20...");
+      for(var i = 0;
+          i < (Math.floor(parseInt(response.tracks.total) / 20)); i++)
+      {
+      	console.log("logging More " + (i + 1));
+        spotify
+          .request(nextMore)
+          .then(function(data) {
+            console.log(data); 
+            nextMore = data.tracks.next;
+            for(var i = 0; i < data.tracks.items.length; i++)
+            {
+              objects.push(data.tracks.items[i])
+            }
+          })
+          .catch(function(err) {
+            console.error('Error occurred: ' + err); 
+          });;
+      }
+
+      console.log("The response found " + response.tracks.total +
+    	        "results.\nI got " + objects.length + " results.");
+    }
+
+    console.log("The response found " + response.tracks.total +
+    	        "results.\nI got " + objects.length + " results.");
+
+    /*
+    var parsedObjects = [];
+    for(var i = 0; i < objects.length; i++)
+    {
+      parsedObjects.push(JSON.parse(objects[i]));
+    }
+    */
+
+    console.log("\nObjects...\n");
+    for(var i = 0; i < objects.length; i++)
+    {
+      console.log(objects[i].name + objects[i].artists[0].name);
+    }
   })
   .catch(function(err) {
     console.log(err);
@@ -52,7 +139,7 @@ var movieThis = function()
   var movieTitle = "";
   if(args.length > 3)
   {
-  	movieTitle += args[3];
+  	movieTitle = args[3];
   	if(args.length > 4)
   	{
       for(var i = 4; i < args.length; i++)

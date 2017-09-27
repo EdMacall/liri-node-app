@@ -6,6 +6,7 @@ var request = require("request");
 
 var imdb = require("imdb");
 var nameToImdb = require("name-to-imdb");
+var logFile = "log.txt";
 
 var myTweets = function()
 {
@@ -44,9 +45,9 @@ var movieThis = function()
   // If the request was successful...
   if (!error && response.statusCode === 200) {
     // console.log(body);
-    var result = JSON.parse(body);
+    var jsonParse = JSON.parse(body);
     // console.log(result);
-    var miscRatings = result.Ratings;
+    var miscRatings = jsonParse.Ratings;
     console.log("\nmiscRatings ...\n" + miscRatings);
 
     var rottenTomatoes = "";
@@ -60,14 +61,54 @@ var movieThis = function()
       }
     }
 
-    console.log("Title:                " + result.Title +
-    	      "\nYear:                 " + result.Year +
-    	      "\nIMDBRating:           " + result.imdbRating +
-    	      "\nRottenTomatoesRating: " + rottenTomatoes +
-    	      "\nCountry:              " + result.Country +
-    	      "\nLanguage:             " + result.Language +
-    	      "\nPlot:                 " + result.Plot +
-    	      "\nActors:               " + result.Actors);
+    var result = "Title:                " + jsonParse.Title +
+             "\r\nYear:                 " + jsonParse.Year +
+             "\r\nIMDBRating:           " + jsonParse.imdbRating +
+             "\r\nRottenTomatoesRating: " + rottenTomatoes +
+             "\r\nCountry:              " + jsonParse.Country +
+             "\r\nLanguage:             " + jsonParse.Language +
+             "\r\nPlot:                 " + jsonParse.Plot +
+             "\r\nActors:               " + jsonParse.Actors;
+
+    console.log(result);
+
+    fs.appendFile(logFile, result, function(err) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        console.log("Content Added!");
+      }
+    });
+    /*
+    var result = [];
+    result.push("Title:                " + jsonParse.Title);
+    result.push("Year:                 " + jsonParse.Year);
+    result.push("IMDBRating:           " + jsonParse.imdbRating);
+    result.push("RottenTomatoesRating: " + rottenTomatoes);
+    result.push("Country:              " + jsonParse.Country);
+    result.push("Language:             " + jsonParse.Language);
+    result.push("Plot:                 " + jsonParse.Plot);
+    result.push("Actors:               " + jsonParse.Actors);
+
+
+    for(var i = 0; i < 8; i++)
+    {
+      console.log(result[i]);
+    }
+
+    for(var i = 0; i < 8; i++)
+    {
+      fs.appendFile(logFile, result[i], function(err) {
+        if (err) {
+          console.log(err);
+        }
+        else {
+          console.log("Content Added!");
+        }
+      });
+    }
+    */
   }
 });
 

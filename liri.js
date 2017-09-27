@@ -1,7 +1,7 @@
 var args = process.argv;
 var fs = require("fs");
 var twitter = require("twitter");
-// var spotify = require("spotify");
+var Spotify = require("node-spotify-api");
 var request = require("request");
 
 var imdb = require("imdb");
@@ -10,25 +10,56 @@ var logFile = "log.txt";
 
 var myTweets = function()
 {
-  
+  // TODO: I need to work out my Twitter process
 };
 
 var spotifyThisSong = function()
 {
-  
-};
-
-var movieId = "";
-
-var movieThis = function()
-{
-  var movieTitle = "";
+  var songTitle = "";
   if(args.length > 2)
   {
     for(var i = 3; i < args.length; i++)
     {
-  	  movieTitle += args[i];
+  	  songTitle += args[i];
     }
+  }
+
+  if(songTitle === "")
+  {
+    songTitle = "The Sign";
+  }
+
+  var spotify = new Spotify({
+    id: "7b85961e534e4c4d9091f1e1f60819b2",
+    secret: "40c6afac6f01400baa439a54aa4f81fd"
+  });
+
+  // TODO:  I need to refine my search
+  spotify
+  .search({ type: 'track', query: songTitle })
+  .then(function(response) {
+    console.log(response);
+  })
+  .catch(function(err) {
+    console.log(err);
+  });
+};
+
+// var movieId = "";
+
+var movieThis = function()
+{
+  var movieTitle = "";
+  if(args.length > 3)
+  {
+  	movieTitle += args[3];
+  	if(args.length > 4)
+  	{
+      for(var i = 4; i < args.length; i++)
+      {
+  	    movieTitle += "%20" + args[i];
+  	  }
+    }  
   }
 
   if(movieTitle === "")
@@ -36,8 +67,10 @@ var movieThis = function()
     movieTitle = "Mr.%20Nobody.";
   }
 
+  // God damn!!!   My API key isn't working.   :-(
   // http://www.omdbapi.com/?i=tt3896198&apikey=31c4373a
   // http://www.omdbapi.com/?t=omg&apikey=31c4373a
+  // I guess I better not call their API key too much  :-P
 
   // request("http://www.omdbapi.com/?t=omg&apikey=BanMePls",
   request("http://www.omdbapi.com/?t=" + movieTitle + "&apikey=BanMePls",
@@ -136,9 +169,12 @@ var movieThis = function()
 
 var doWhatItSays = function()
 {
-
+  // TODO: I need to work out my do what it says process
+  // TODO: I need to open and read the file to find out what it says to do
+  // TODO: I need to do what it says
 };
 
+/*
 var getMovie = function()
 {
   // TODO: OMG!  This API really sux.
@@ -155,6 +191,7 @@ var getMovie = function()
       console.log(data);
   });
 };
+*/
 
 switch(args[2])
 {

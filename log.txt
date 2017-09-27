@@ -5,4 +5,18 @@ RottenTomatoesRating: 64%
 Country:              Belgium, Germany, Canada, France, USA, UK
 Language:             English, Mohawk
 Plot:                 A boy stands on a station platform as a train is about to leave. Should he go with his mother or stay with his father? Infinite possibilities arise from this decision. As long as he doesn't choose, anything is possible.
-Actors:               Jared Leto, Sarah Polley, Diane Kruger, Linh Dan Pham
+Actors:               Jared Leto, Sarah Polley, Diane Kruger, Linh Dan PhamTitle:                Mission to Mars
+Year:                 2000
+IMDBRating:           5.6
+RottenTomatoesRating: 
+Country:              USA
+Language:             English
+Plot:                 When the first manned mission to Mars meets with a catastrophic and mysterious disaster after reporting an unidentified structure, a rescue mission is launched to investigate the tragedy and bring back any survivors.
+Actors:               Gary Sinise, Tim Robbins, Don Cheadle, Connie NielsenTitle:                Mission to Mars
+Year:                 2000
+IMDBRating:           5.6
+RottenTomatoesRating: 
+Country:              USA
+Language:             English
+Plot:                 When the first manned mission to Mars meets with a catastrophic and mysterious disaster after reporting an unidentified structure, a rescue mission is launched to investigate the tragedy and bring back any survivors.
+Actors:               Gary Sinise, Tim Robbins, Don Cheadle, Connie Nielsen

@@ -71,7 +71,7 @@ var spotifyThisSong = function()
   spotify
   .search({ type: 'track', query: songTitle })
   .then(function(response) {
-  	/*
+
     console.log("Tracks:..." + 
     	      "\n  Href: " + response.tracks.href +
     	      "\n  Limit: " + response.tracks.limit +
@@ -79,9 +79,11 @@ var spotifyThisSong = function()
     	      "\n  Offset: " + response.tracks.offset +
     	      "\n  Previous: " + response.tracks.previous +
     	      "\n  Total: " + response.tracks.total);
-    */
+
 
     var objects = response.tracks.items;
+
+    /*
     var nextMore = response.tracks.next;
     console.log(nextMore);
     if(response.tracks.total > 20 && nextMore != null)
@@ -94,11 +96,15 @@ var spotifyThisSong = function()
         spotify
           .request(nextMore)
           .then(function(data) {
-            console.log(data); 
+            // console.log(data); 
             nextMore = data.tracks.next;
+            console.log(nextMore);
             for(var i = 0; i < data.tracks.items.length; i++)
             {
               objects.push(data.tracks.items[i])
+              console.log("Item number " + (i + 1) + "...\n" +
+                          data.tracks.items[i].artists[0].name + "\n" +
+                          data.tracks.items[i].name);
             }
           })
           .catch(function(err) {
@@ -120,12 +126,25 @@ var spotifyThisSong = function()
       parsedObjects.push(JSON.parse(objects[i]));
     }
     */
-
-    console.log("\nObjects...\n");
+    var result = "Objects...";
     for(var i = 0; i < objects.length; i++)
     {
-      console.log(objects[i].name + objects[i].artists[0].name);
+      result += "\r\nAlbum #" + (i + 1) + "..." +
+                "\r\nAlbum Name:  " + objects[i].name + 
+                "\r\nArtist Name: " + objects[i].artists[0].name + "\r\n";
     }
+
+    console.log(result);
+
+    fs.appendFile(logFile, result, function(err) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        console.log("Content Added!");
+      }
+    });
+
   })
   .catch(function(err) {
     console.log(err);
@@ -265,11 +284,11 @@ var doWhatItSays = function()
       return console.log(error);
     }
     // We will then print the contents of data
-    console.log(data);
+    // console.log(data);
     // Then split it by commas (to make it more readable)
     var dataArr = data.split(",");
     // We will then re-display the content as an array for later use.
-    console.log(dataArr);
+    // console.log(dataArr);
 
     if(args.length > 3)
     {

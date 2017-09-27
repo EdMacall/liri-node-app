@@ -259,6 +259,29 @@ var doWhatItSays = function()
   // TODO: I need to work out my do what it says process
   // TODO: I need to open and read the file to find out what it says to do
   // TODO: I need to do what it says
+  fs.readFile("random.txt", "utf8", function(error, data) {
+    // If the code experiences any errors it will log the error to the console.
+    if (error) {
+      return console.log(error);
+    }
+    // We will then print the contents of data
+    console.log(data);
+    // Then split it by commas (to make it more readable)
+    var dataArr = data.split(",");
+    // We will then re-display the content as an array for later use.
+    console.log(dataArr);
+
+    if(args.length > 3)
+    {
+      args[3] = dataArr[1];
+    }
+    else
+    {
+      args.push(dataArr[1]);
+    }
+
+    select(dataArr[0]);
+  });
 };
 
 /*
@@ -280,16 +303,19 @@ var getMovie = function()
 };
 */
 
-switch(args[2])
-{
-  case "my-tweets":         myTweets();
-                            break;
-  case "spotify-this-song": spotifyThisSong();
-                            break;
-  case "movie-this":        movieThis();
-                            break;
-  case "do-what-it-says":   doWhatItSays();
-                            break;
-  default:
-};
+var select = function(string){
+  switch(string)
+  {
+    case "my-tweets":         myTweets();
+                              break;
+    case "spotify-this-song": spotifyThisSong();
+                              break;
+    case "movie-this":        movieThis();
+                              break;
+    case "do-what-it-says":   doWhatItSays();
+                              break;
+    default:
+  };
+}
 
+select(args[2]);

@@ -71,7 +71,7 @@ var spotifyThisSong = function()
   spotify
   .search({ type: 'track', query: songTitle })
   .then(function(response) {
-
+    /*
     console.log("Tracks:..." + 
     	      "\n  Href: " + response.tracks.href +
     	      "\n  Limit: " + response.tracks.limit +
@@ -79,8 +79,7 @@ var spotifyThisSong = function()
     	      "\n  Offset: " + response.tracks.offset +
     	      "\n  Previous: " + response.tracks.previous +
     	      "\n  Total: " + response.tracks.total);
-
-
+    */
     var objects = response.tracks.items;
 
     /*
@@ -126,13 +125,20 @@ var spotifyThisSong = function()
       parsedObjects.push(JSON.parse(objects[i]));
     }
     */
-    var result = "Objects...";
-    for(var i = 0; i < objects.length; i++)
-    {
-      result += "\r\nAlbum #" + (i + 1) + "..." +
-                "\r\nAlbum Name:  " + objects[i].name + 
-                "\r\nArtist Name: " + objects[i].artists[0].name + "\r\n";
-    }
+
+    // Mike says that we only need to return the first result,
+    // even if Spotify returns 15000 results and still hasn't 
+    // found the one that you're looking for
+    // var result = "Objects...";
+    // for(var i = 0; i < objects.length; i++)
+    // {
+        // result += "\r\nAlbum #" + (i + 1) + "..." +
+    var result = "\r\nAlbum Name:   " + objects[1].name + 
+                 "\r\nArtist Name:  " + objects[1].artists[0].name +
+                 "\r\nAlbum Name:   " + objects[1].album.name +
+                 "\r\nPreview Link: " + objects[1].external_urls.spotify +
+                 "\r\n";
+    // }
 
     console.log(result);
 
